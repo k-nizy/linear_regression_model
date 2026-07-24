@@ -36,7 +36,7 @@ class PredictionScreen extends StatefulWidget {
 class _PredictionScreenState extends State<PredictionScreen> {
   // API URL - Replace with your deployed Render URL or local server
   final TextEditingController _apiUrlController = TextEditingController(
-    text: 'https://summative-api.onrender.com', // Default production endpoint
+    text: 'https://adult-mortality-api.onrender.com', // Default production endpoint
   );
 
   // Form Controllers for all 17 features
@@ -242,7 +242,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
               controller: _apiUrlController,
               decoration: InputDecoration(
                 labelText: 'API Base URL',
-                hintText: 'e.g. https://summative-api.onrender.com or http://10.0.2.2:8000',
+                hintText: 'e.g. https://adult-mortality-api.onrender.com or http://10.0.2.2:8000',
                 prefixIcon: const Icon(Icons.link),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),

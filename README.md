@@ -8,8 +8,8 @@ Premature adult deaths (ages 15-60) severely undermine socio-economic developmen
 - **Description:** Filtered specifically for African countries (2000-2015). Features include immunization coverage (Hepatitis B, Polio, Diphtheria), disease metrics (HIV/AIDS, Measles), economic metrics (GDP, Healthcare Expenditure), and social factors (Schooling, BMI).
 
 ## 3. Public API Endpoint (Swagger UI)
-- **Public Render API URL:** `https://summative-api.onrender.com`
-- **Swagger Documentation:** [https://summative-api.onrender.com/docs](https://summative-api.onrender.com/docs)
+- **Public Render API URL:** `https://adult-mortality-api.onrender.com`
+- **Swagger Documentation:** [https://adult-mortality-api.onrender.com/docs](https://adult-mortality-api.onrender.com/docs)
 
 ## 4. Video Demo Link
 - **YouTube Demo (Max 7 Minutes):** `[INSERT YOUR YOUTUBE VIDEO LINK HERE]`
