@@ -47,16 +47,10 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost",
-        "http://localhost:8080",
-        "http://localhost:3000",
-        "http://localhost:5000",
-        "https://summative-flutter.onrender.com",
-    ],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["GET", "POST"],
-    allow_headers=["Content-Type", "Authorization", "Accept"],
+    allow_headers=["*"],
 )
 
 
