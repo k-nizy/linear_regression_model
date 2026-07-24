@@ -26,25 +26,21 @@ Premature adult deaths (ages 15-60) severely undermine socio-economic developmen
    ```
 4. Run the application on an emulator or connected device:
    ```bash
-   flutter run
+   flutter run -d chrome
    ```
-5. Tap **"Auto-Fill Sample"** to populate sample data or manually enter values, then tap **"Predict"**.
+5. Tap the **⚡ (bolt) icon** in the top bar to cycle through 5 sample country profiles, then tap **"Predict"**.
 
 ## 6. How to Run the API Locally using `uv`
-1. Navigate to the root directory:
-   ```bash
-   cd summative
-   ```
-2. Create virtual environment and sync dependencies using `uv`:
+1. From the project root directory, create a virtual environment and sync dependencies using `uv`:
    ```bash
    uv venv
    uv pip install -r API/requirements.txt
    ```
-3. Run the FastAPI dev server:
+2. Run the FastAPI dev server:
    ```bash
    uvicorn API.prediction:app --reload --port 8000
    ```
-4. Open Swagger UI locally at: `http://localhost:8000/docs`
+3. Open Swagger UI locally at: `http://localhost:8000/docs`
 
 ## 7. CORS Middleware Configuration Rationale
-We explicitly avoid using wildcard (`allow_origins=["*"]`) for security best practices. The CORS middleware is configured to permit only trusted origin domains (`http://localhost`, production frontend domains) with restricted methods (`GET`, `POST`) and explicit headers (`Content-Type`, `Authorization`). This prevents Unauthorized Cross-Origin Request Forgery while allowing seamless Flutter app communication.
+The CORS middleware is explicitly configured on the FastAPI application (`allow_origins=["*"]`, `allow_methods=["GET", "POST"]`) to ensure seamless communication with web, mobile (Flutter), and local development environments without origin blocking.
