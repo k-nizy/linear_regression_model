@@ -6,15 +6,51 @@ void main() {
   runApp(const AdultMortalityApp());
 }
 
-class AdultMortalityApp extends StatelessWidget {
+class AdultMortalityApp extends StatefulWidget {
   const AdultMortalityApp({super.key});
+
+  @override
+  State<AdultMortalityApp> createState() => _AdultMortalityAppState();
+}
+
+class _AdultMortalityAppState extends State<AdultMortalityApp> {
+  ThemeMode _themeMode = ThemeMode.dark;
+
+  void _toggleTheme() {
+    setState(() {
+      _themeMode = _themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Adult Mortality Predictor',
       debugShowCheckedModeBanner: false,
+      themeMode: _themeMode,
+      // Light Theme
       theme: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.light,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF0F766E),
+          brightness: Brightness.light,
+        ),
+        scaffoldBackgroundColor: const Color(0xFFF8FAFC),
+        cardColor: Colors.white,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF0F766E),
+          foregroundColor: Colors.white,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          labelStyle: const TextStyle(color: Color(0xFF475569)),
+        ),
+      ),
+      // Dark Theme
+      darkTheme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.dark,
         colorScheme: ColorScheme.fromSeed(
@@ -34,13 +70,23 @@ class AdultMortalityApp extends StatelessWidget {
           labelStyle: const TextStyle(color: Color(0xFF9CA3AF)),
         ),
       ),
-      home: const PredictionScreen(),
+      home: PredictionScreen(
+        onToggleTheme: _toggleTheme,
+        isDarkMode: _themeMode == ThemeMode.dark,
+      ),
     );
   }
 }
 
 class PredictionScreen extends StatefulWidget {
-  const PredictionScreen({super.key});
+  final VoidCallback onToggleTheme;
+  final bool isDarkMode;
+
+  const PredictionScreen({
+    super.key,
+    required this.onToggleTheme,
+    required this.isDarkMode,
+  });
 
   @override
   State<PredictionScreen> createState() => _PredictionScreenState();
@@ -234,18 +280,32 @@ class _PredictionScreenState extends State<PredictionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = widget.isDarkMode;
+    final primaryColor = isDark ? const Color(0xFF14B8A6) : const Color(0xFF0F766E);
+    final cardBg = isDark ? const Color(0xFF1A2E2A) : const Color(0xFFF0FDF4);
+    final cardBorder = isDark ? const Color(0xFF14B8A6) : const Color(0xFFBBF7D0);
+    final cardTextColor = isDark ? const Color(0xFF5EEAD4) : const Color(0xFF166534);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           'African Adult Mortality Predictor',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        backgroundColor: const Color(0xFF1A1A2E),
+        backgroundColor: isDark ? const Color(0xFF1A1A2E) : const Color(0xFF0F766E),
         elevation: 2,
         actions: [
           IconButton(
+            icon: Icon(
+              isDark ? Icons.light_mode : Icons.dark_mode,
+              color: Colors.amberAccent,
+            ),
+            tooltip: isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode',
+            onPressed: widget.onToggleTheme,
+          ),
+          IconButton(
             icon: const Icon(Icons.bolt, color: Colors.amberAccent),
-            tooltip: 'Fill Sample Data',
+            tooltip: 'Cycle Sample Country Profile',
             onPressed: _fillSampleData,
           ),
         ],
@@ -257,21 +317,21 @@ class _PredictionScreenState extends State<PredictionScreen> {
           children: [
             // Header Info Banner
             Card(
-              color: const Color(0xFF1A2E2A),
+              color: cardBg,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: const BorderSide(color: Color(0xFF14B8A6), width: 0.5),
+                side: BorderSide(color: cardBorder, width: isDark ? 0.5 : 1.0),
               ),
-              child: const Padding(
-                padding: EdgeInsets.all(12.0),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
                 child: Row(
                   children: [
-                    Icon(Icons.health_and_safety, color: Color(0xFF14B8A6), size: 30),
-                    SizedBox(width: 12),
+                    Icon(Icons.health_and_safety, color: primaryColor, size: 30),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Text(
                         'Enter national health & economic indicators to predict adult mortality (ages 15-60) per 1,000 population.',
-                        style: TextStyle(fontSize: 13, color: Color(0xFF5EEAD4)),
+                        style: TextStyle(fontSize: 13, color: cardTextColor),
                       ),
                     ),
                   ],
@@ -309,7 +369,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                 padding: const EdgeInsets.only(bottom: 12.0),
                 child: TextField(
                   controller: _controllers[key],
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   decoration: InputDecoration(
                     labelText: key.replaceAll('_', ' '),
                     helperText: hint,
@@ -326,8 +386,8 @@ class _PredictionScreenState extends State<PredictionScreen> {
             ElevatedButton(
               onPressed: _isLoading ? null : _makePrediction,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF14B8A6),
-                foregroundColor: Colors.black,
+                backgroundColor: primaryColor,
+                foregroundColor: isDark ? Colors.black : Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 elevation: 3,
@@ -349,30 +409,30 @@ class _PredictionScreenState extends State<PredictionScreen> {
             // Display Area for Output / Errors
             if (_predictionResult != null)
               Card(
-                color: const Color(0xFF1A2E2A),
+                color: cardBg,
                 elevation: 4,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
-                  side: const BorderSide(color: Color(0xFF14B8A6), width: 2),
+                  side: BorderSide(color: primaryColor, width: 2),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
-                      const Icon(Icons.check_circle, color: Color(0xFF14B8A6), size: 48),
+                      Icon(Icons.check_circle, color: primaryColor, size: 48),
                       const SizedBox(height: 8),
-                      const Text(
+                      Text(
                         'Predicted Adult Mortality Rate:',
-                        style: TextStyle(fontSize: 14, color: Color(0xFF5EEAD4)),
+                        style: TextStyle(fontSize: 14, color: cardTextColor),
                       ),
                       const SizedBox(height: 6),
                       Text(
                         _predictionResult!,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF2DD4BF),
+                          color: isDark ? const Color(0xFF2DD4BF) : const Color(0xFF047857),
                         ),
                       ),
                     ],
@@ -382,7 +442,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
 
             if (_errorMessage != null)
               Card(
-                color: const Color(0xFF2E1A1A),
+                color: isDark ? const Color(0xFF2E1A1A) : const Color(0xFFFEF2F2),
                 elevation: 2,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -397,7 +457,10 @@ class _PredictionScreenState extends State<PredictionScreen> {
                       Expanded(
                         child: Text(
                           _errorMessage!,
-                          style: const TextStyle(color: Color(0xFFFCA5A5), fontSize: 14),
+                          style: TextStyle(
+                            color: isDark ? const Color(0xFFFCA5A5) : const Color(0xFF991B1B),
+                            fontSize: 14,
+                          ),
                         ),
                       ),
                     ],
