@@ -165,7 +165,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
         Uri.parse('$baseUrl/predict'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(payload),
-      ).timeout(const Duration(seconds: 10));
+      ).timeout(const Duration(seconds: 60));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);

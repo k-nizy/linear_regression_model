@@ -18,7 +18,7 @@ Premature adult deaths (ages 15-60) severely undermine socio-economic developmen
 1. Ensure Flutter SDK is installed: `flutter doctor`
 2. Navigate to the app directory:
    ```bash
-   cd summative/FlutterApp
+   cd FlutterApp
    ```
 3. Fetch dependencies:
    ```bash
