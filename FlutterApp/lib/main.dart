@@ -16,9 +16,22 @@ class AdultMortalityApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
+        brightness: Brightness.dark,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF0F766E),
-          brightness: Brightness.light,
+          seedColor: const Color(0xFF14B8A6),
+          brightness: Brightness.dark,
+        ),
+        scaffoldBackgroundColor: const Color(0xFF121212),
+        cardColor: const Color(0xFF1E1E1E),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF1A1A2E),
+          foregroundColor: Colors.white,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: const Color(0xFF2A2A2A),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          labelStyle: const TextStyle(color: Color(0xFF9CA3AF)),
         ),
       ),
       home: const PredictionScreen(),
@@ -85,25 +98,55 @@ class _PredictionScreenState extends State<PredictionScreen> {
     'Schooling': {'min': 0.0, 'max': 25.0},
   };
 
+  // Index to cycle through different sample datasets
+  int _sampleIndex = 0;
+
+  // 5 different sample datasets representing various African country profiles
+  final List<Map<String, String>> _sampleDatasets = [
+    // Sample 1: Low-income country with high mortality risk
+    {'Year': '2014', 'Status': '0', 'infant_deaths': '64', 'Alcohol': '1.5',
+     'percentage_expenditure': '50.0', 'Hepatitis_B': '72.0', 'Measles': '500',
+     'BMI': '22.5', 'Polio': '65.0', 'Total_expenditure': '5.5',
+     'Diphtheria': '65.0', 'HIV_AIDS': '3.5', 'GDP': '1200.0',
+     'Population': '35000000', 'thinness_1_19_years': '7.5',
+     'Income_composition_of_resources': '0.45', 'Schooling': '8.5'},
+    // Sample 2: Upper-middle income country with better health indicators
+    {'Year': '2013', 'Status': '0', 'infant_deaths': '12', 'Alcohol': '8.2',
+     'percentage_expenditure': '850.0', 'Hepatitis_B': '90.0', 'Measles': '50',
+     'BMI': '28.0', 'Polio': '95.0', 'Total_expenditure': '8.0',
+     'Diphtheria': '92.0', 'HIV_AIDS': '8.0', 'GDP': '6500.0',
+     'Population': '54000000', 'thinness_1_19_years': '3.2',
+     'Income_composition_of_resources': '0.65', 'Schooling': '13.0'},
+    // Sample 3: High HIV/AIDS burden country
+    {'Year': '2010', 'Status': '0', 'infant_deaths': '45', 'Alcohol': '4.0',
+     'percentage_expenditure': '200.0', 'Hepatitis_B': '80.0', 'Measles': '1200',
+     'BMI': '19.5', 'Polio': '78.0', 'Total_expenditure': '6.2',
+     'Diphtheria': '75.0', 'HIV_AIDS': '15.0', 'GDP': '800.0',
+     'Population': '18000000', 'thinness_1_19_years': '10.5',
+     'Income_composition_of_resources': '0.38', 'Schooling': '6.5'},
+    // Sample 4: Rapidly developing country with improving indicators
+    {'Year': '2015', 'Status': '0', 'infant_deaths': '25', 'Alcohol': '6.5',
+     'percentage_expenditure': '400.0', 'Hepatitis_B': '85.0', 'Measles': '150',
+     'BMI': '24.0', 'Polio': '88.0', 'Total_expenditure': '7.0',
+     'Diphtheria': '87.0', 'HIV_AIDS': '1.2', 'GDP': '3200.0',
+     'Population': '48000000', 'thinness_1_19_years': '5.0',
+     'Income_composition_of_resources': '0.55', 'Schooling': '10.5'},
+    // Sample 5: Low-resource country with high infant mortality
+    {'Year': '2008', 'Status': '0', 'infant_deaths': '120', 'Alcohol': '0.5',
+     'percentage_expenditure': '15.0', 'Hepatitis_B': '55.0', 'Measles': '3000',
+     'BMI': '18.0', 'Polio': '50.0', 'Total_expenditure': '3.5',
+     'Diphtheria': '48.0', 'HIV_AIDS': '2.0', 'GDP': '350.0',
+     'Population': '95000000', 'thinness_1_19_years': '12.0',
+     'Income_composition_of_resources': '0.30', 'Schooling': '4.5'},
+  ];
+
   void _fillSampleData() {
     setState(() {
-      _controllers['Year']!.text = '2015';
-      _controllers['Status']!.text = '0';
-      _controllers['infant_deaths']!.text = '64';
-      _controllers['Alcohol']!.text = '1.5';
-      _controllers['percentage_expenditure']!.text = '50.0';
-      _controllers['Hepatitis_B']!.text = '72.0';
-      _controllers['Measles']!.text = '500';
-      _controllers['BMI']!.text = '22.5';
-      _controllers['Polio']!.text = '65.0';
-      _controllers['Total_expenditure']!.text = '5.5';
-      _controllers['Diphtheria']!.text = '65.0';
-      _controllers['HIV_AIDS']!.text = '3.5';
-      _controllers['GDP']!.text = '1200.0';
-      _controllers['Population']!.text = '35000000';
-      _controllers['thinness_1_19_years']!.text = '7.5';
-      _controllers['Income_composition_of_resources']!.text = '0.45';
-      _controllers['Schooling']!.text = '8.5';
+      final sample = _sampleDatasets[_sampleIndex % _sampleDatasets.length];
+      sample.forEach((key, value) {
+        _controllers[key]!.text = value;
+      });
+      _sampleIndex++;
       _errorMessage = null;
       _predictionResult = null;
     });
@@ -197,7 +240,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
           'African Adult Mortality Predictor',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        backgroundColor: const Color(0xFF0F766E),
+        backgroundColor: const Color(0xFF1A1A2E),
         elevation: 2,
         actions: [
           IconButton(
@@ -214,21 +257,21 @@ class _PredictionScreenState extends State<PredictionScreen> {
           children: [
             // Header Info Banner
             Card(
-              color: const Color(0xFFF0FDF4),
+              color: const Color(0xFF1A2E2A),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: const BorderSide(color: Color(0xFFBBF7D0)),
+                side: const BorderSide(color: Color(0xFF14B8A6), width: 0.5),
               ),
               child: const Padding(
                 padding: EdgeInsets.all(12.0),
                 child: Row(
                   children: [
-                    Icon(Icons.health_and_safety, color: Color(0xFF0F766E), size: 30),
+                    Icon(Icons.health_and_safety, color: Color(0xFF14B8A6), size: 30),
                     SizedBox(width: 12),
                     Expanded(
                       child: Text(
                         'Enter national health & economic indicators to predict adult mortality (ages 15-60) per 1,000 population.',
-                        style: TextStyle(fontSize: 13, color: Color(0xFF166534)),
+                        style: TextStyle(fontSize: 13, color: Color(0xFF5EEAD4)),
                       ),
                     ),
                   ],
@@ -251,19 +294,9 @@ class _PredictionScreenState extends State<PredictionScreen> {
             const SizedBox(height: 20),
 
             // Section Header
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Input Predictor Variables (17)',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                TextButton.icon(
-                  onPressed: _fillSampleData,
-                  icon: const Icon(Icons.auto_fix_high, size: 18),
-                  label: const Text('Auto-Fill Sample'),
-                ),
-              ],
+            const Text(
+              'Input Predictor Variables (17)',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const Divider(),
 
@@ -293,8 +326,8 @@ class _PredictionScreenState extends State<PredictionScreen> {
             ElevatedButton(
               onPressed: _isLoading ? null : _makePrediction,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF0F766E),
-                foregroundColor: Colors.white,
+                backgroundColor: const Color(0xFF14B8A6),
+                foregroundColor: Colors.black,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 elevation: 3,
@@ -316,21 +349,21 @@ class _PredictionScreenState extends State<PredictionScreen> {
             // Display Area for Output / Errors
             if (_predictionResult != null)
               Card(
-                color: const Color(0xFFECFDF5),
+                color: const Color(0xFF1A2E2A),
                 elevation: 4,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
-                  side: const BorderSide(color: Color(0xFF10B981), width: 2),
+                  side: const BorderSide(color: Color(0xFF14B8A6), width: 2),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
-                      const Icon(Icons.check_circle, color: Color(0xFF059669), size: 48),
+                      const Icon(Icons.check_circle, color: Color(0xFF14B8A6), size: 48),
                       const SizedBox(height: 8),
                       const Text(
                         'Predicted Adult Mortality Rate:',
-                        style: TextStyle(fontSize: 14, color: Color(0xFF065F46)),
+                        style: TextStyle(fontSize: 14, color: Color(0xFF5EEAD4)),
                       ),
                       const SizedBox(height: 6),
                       Text(
@@ -339,7 +372,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                         style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF047857),
+                          color: Color(0xFF2DD4BF),
                         ),
                       ),
                     ],
@@ -349,7 +382,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
 
             if (_errorMessage != null)
               Card(
-                color: const Color(0xFFFEF2F2),
+                color: const Color(0xFF2E1A1A),
                 elevation: 2,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -359,12 +392,12 @@ class _PredictionScreenState extends State<PredictionScreen> {
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
                     children: [
-                      const Icon(Icons.error_outline, color: Color(0xFFDC2626), size: 36),
+                      const Icon(Icons.error_outline, color: Color(0xFFEF4444), size: 36),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
                           _errorMessage!,
-                          style: const TextStyle(color: Color(0xFF991B1B), fontSize: 14),
+                          style: const TextStyle(color: Color(0xFFFCA5A5), fontSize: 14),
                         ),
                       ),
                     ],
