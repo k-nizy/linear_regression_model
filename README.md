@@ -1,4 +1,4 @@
-# Adult Mortality Rate Prediction in African Nations 🌍
+# Adult Mortality Rate Prediction in African Nations 
 
 ## 1. Mission & Problem Statement
 Premature adult deaths (ages 15-60) severely undermine socio-economic development across African nations. This project implements a machine learning linear regression pipeline to predict Adult Mortality Rates using national health and economic indicators. By identifying high-impact variables like HIV prevalence and schooling, public health officials can allocate intervention resources effectively.
