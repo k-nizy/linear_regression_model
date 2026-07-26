@@ -18,7 +18,7 @@ Premature adult deaths (ages 15-60) severely undermine socio-economic developmen
 - **Swagger Documentation:** [https://adult-mortality-api.onrender.com/docs](https://adult-mortality-api.onrender.com/docs)
 
 ## 4. Video Demo Link
-- **YouTube Demo:** [https://youtu.be/FV_Ha3--pE0](https://youtu.be/FV_Ha3--pE0)
+- **YouTube Demo:** [https://youtu.be/rVKklhwyLS4](https://youtu.be/rVKklhwyLS4)
 
 ## 5. How to Run the Mobile App (Flutter)
 1. Ensure Flutter SDK is installed: `flutter doctor`
