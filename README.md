@@ -7,11 +7,11 @@ Premature adult deaths (ages 15-60) severely undermine socio-economic developmen
 - **Source:** [WHO Life Expectancy & Health Indicators Dataset (Kaggle)](https://www.kaggle.com/datasets/kumarajarshi/life-expectancy-who)
 - **Description:** Filtered specifically for African countries (2000-2015). Features include immunization coverage (Hepatitis B, Polio, Diphtheria), disease metrics (HIV/AIDS, Measles), economic metrics (GDP, Healthcare Expenditure), and social factors (Schooling, BMI).
 
-## 3. Key Visualizations (in `linear_regression/multivariate.ipynb`)
+## 3. Key Visualizations (in `summative/linear_regression/multivariate.ipynb`)
 - **Correlation Heatmap** — identifies HIV/AIDS, Schooling, Income Composition as top predictors of Adult Mortality
 - **Target Distribution** — Adult Mortality skewed right (1–723), informing model choice
 - **SGD Loss Curve (Train vs Test)** — 150 epochs, shows convergence without overfitting
-- **Best-Fit Scatter Plot** — Actual vs Predicted with y=x reference line (Random Forest, MSE=1,102)
+- **Best-Fit Scatter Plot** — Actual vs Predicted with y=x reference line (Random Forest, Test MSE=18,231)
 
 ## 3. Public API Endpoint (Swagger UI)
 - **Public Render API URL:** `https://adult-mortality-api.onrender.com`
@@ -24,15 +24,15 @@ Premature adult deaths (ages 15-60) severely undermine socio-economic developmen
 1. Ensure Flutter SDK is installed: `flutter doctor`
 2. Navigate to the app directory:
    ```bash
-   cd FlutterApp
+   cd summative/FlutterApp
    ```
 3. Fetch dependencies:
    ```bash
    flutter pub get
    ```
-4. Run the application on an emulator or connected device:
+4. Run the application on an Android emulator or connected device:
    ```bash
-   flutter run -d chrome
+   flutter run
    ```
 5. Tap the **⚡ (bolt) icon** in the top bar to cycle through 5 sample country profiles, then tap **"Predict"**.
 
@@ -40,11 +40,11 @@ Premature adult deaths (ages 15-60) severely undermine socio-economic developmen
 1. From the project root directory, create a virtual environment and sync dependencies using `uv`:
    ```bash
    uv venv
-   uv pip install -r API/requirements.txt
+   uv pip install -r summative/API/requirements.txt
    ```
 2. Run the FastAPI dev server:
    ```bash
-   uvicorn API.prediction:app --reload --port 8000
+   uvicorn summative.API.prediction:app --reload --port 8000
    ```
 3. Open Swagger UI locally at: `http://localhost:8000/docs`
 
